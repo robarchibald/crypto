@@ -18,7 +18,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/robarchibald/crypto/ssh"
+	"golang.org/x/crypto/ssh"
 )
 
 // startOpenSSHAgent executes ssh-agent, and returns an Agent interface to it.

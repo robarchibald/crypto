@@ -1,3 +1,3 @@
-module github.com/robarchibald/crypto
+module golang.org/x/crypto
 
-require github.com/robarchibald/sys v0.0.0-20190403152447-81d4e9dc473e
+require golang.org/x/sys v0.0.0-20190403152447-81d4e9dc473e

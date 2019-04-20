@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/robarchibald/crypto/md4"
+	"golang.org/x/crypto/md4"
 )
 
 func ExampleNew() {

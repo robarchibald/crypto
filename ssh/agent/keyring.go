@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/robarchibald/crypto/ssh"
+	"golang.org/x/crypto/ssh"
 )
 
 type privKey struct {

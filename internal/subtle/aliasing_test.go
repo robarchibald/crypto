@@ -7,7 +7,7 @@ package subtle_test
 import (
 	"testing"
 
-	"github.com/robarchibald/crypto/internal/subtle"
+	"golang.org/x/crypto/internal/subtle"
 )
 
 var a, b [100]byte

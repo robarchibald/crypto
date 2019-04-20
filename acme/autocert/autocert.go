@@ -31,7 +31,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/robarchibald/crypto/acme"
+	"golang.org/x/crypto/acme"
 )
 
 // createCertRetryAfter is how much time to wait before removing a failed state

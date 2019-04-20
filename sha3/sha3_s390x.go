@@ -13,7 +13,7 @@ package sha3
 import (
 	"hash"
 
-	"github.com/robarchibald/sys/cpu"
+	"golang.org/x/sys/cpu"
 )
 
 // codes represent 7-bit KIMD/KLMD function codes as defined in

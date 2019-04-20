@@ -6,7 +6,7 @@
 
 package blake2s
 
-import "github.com/robarchibald/sys/cpu"
+import "golang.org/x/sys/cpu"
 
 var (
 	useSSE4  = false

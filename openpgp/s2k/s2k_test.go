@@ -15,7 +15,7 @@ import (
 	"encoding/hex"
 	"testing"
 
-	_ "github.com/robarchibald/crypto/ripemd160"
+	_ "golang.org/x/crypto/ripemd160"
 )
 
 var saltedTests = []struct {
