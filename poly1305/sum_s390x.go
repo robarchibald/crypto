@@ -7,7 +7,7 @@
 package poly1305
 
 import (
-	"golang.org/x/sys/cpu"
+	"github.com/robarchibald/sys/cpu"
 )
 
 // poly1305vx is an assembly implementation of Poly1305 that uses vector

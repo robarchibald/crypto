@@ -6,7 +6,7 @@
 
 package terminal
 
-import "golang.org/x/sys/unix"
+import "github.com/robarchibald/sys/unix"
 
 const ioctlReadTermios = unix.TCGETS
 const ioctlWriteTermios = unix.TCSETS

@@ -6,7 +6,7 @@
 
 package blake2b
 
-import "golang.org/x/sys/cpu"
+import "github.com/robarchibald/sys/cpu"
 
 func init() {
 	useSSE4 = cpu.X86.HasSSE41

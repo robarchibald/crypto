@@ -20,8 +20,8 @@ import (
 	"strings"
 	"testing"
 
-	"golang.org/x/crypto/ed25519"
-	"golang.org/x/crypto/ssh/testdata"
+	"github.com/robarchibald/crypto/ed25519"
+	"github.com/robarchibald/crypto/ssh/testdata"
 )
 
 func rawKey(pub PublicKey) interface{} {

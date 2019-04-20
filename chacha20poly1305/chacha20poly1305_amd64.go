@@ -9,8 +9,8 @@ package chacha20poly1305
 import (
 	"encoding/binary"
 
-	"golang.org/x/crypto/internal/subtle"
-	"golang.org/x/sys/cpu"
+	"github.com/robarchibald/crypto/internal/subtle"
+	"github.com/robarchibald/sys/cpu"
 )
 
 //go:noescape

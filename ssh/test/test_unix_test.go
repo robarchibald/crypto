@@ -23,8 +23,8 @@ import (
 	"testing"
 	"text/template"
 
-	"golang.org/x/crypto/ssh"
-	"golang.org/x/crypto/ssh/testdata"
+	"github.com/robarchibald/crypto/ssh"
+	"github.com/robarchibald/crypto/ssh/testdata"
 )
 
 const (

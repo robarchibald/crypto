@@ -7,7 +7,7 @@
 package chacha20
 
 import (
-	"golang.org/x/sys/cpu"
+	"github.com/robarchibald/sys/cpu"
 )
 
 var haveAsm = cpu.S390X.HasVX
