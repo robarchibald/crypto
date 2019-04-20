@@ -7,6 +7,7 @@ package autocert
 import (
 	"context"
 	"crypto"
+	"fmt"
 	"sync"
 	"time"
 )
@@ -30,6 +31,7 @@ type domainRenewal struct {
 //
 // If the timer is already started, calling start is a noop.
 func (dr *domainRenewal) start(exp time.Time) {
+	fmt.Println("domainRenewal start called")
 	dr.timerMu.Lock()
 	defer dr.timerMu.Unlock()
 	if dr.timer != nil {
@@ -41,6 +43,7 @@ func (dr *domainRenewal) start(exp time.Time) {
 // stop stops the cert renewal timer.
 // If the timer is already stopped, calling stop is a noop.
 func (dr *domainRenewal) stop() {
+	fmt.Println("domainRenewal stop called")
 	dr.timerMu.Lock()
 	defer dr.timerMu.Unlock()
 	if dr.timer == nil {
@@ -53,15 +56,18 @@ func (dr *domainRenewal) stop() {
 // renew is called periodically by a timer.
 // The first renew call is kicked off by dr.start.
 func (dr *domainRenewal) renew() {
+	fmt.Println("domainRenewal renew called")
 	dr.timerMu.Lock()
 	defer dr.timerMu.Unlock()
 	if dr.timer == nil {
 		return
 	}
 
+	fmt.Println("domainRenewal renew getting context")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
 	defer cancel()
 	// TODO: rotate dr.key at some point?
+	fmt.Println("domainRenewal renew calling do")
 	next, err := dr.do(ctx)
 	if err != nil {
 		next = renewJitter / 2
@@ -74,6 +80,7 @@ func (dr *domainRenewal) renew() {
 // updateState locks and replaces the relevant Manager.state item with the given
 // state. It additionally updates dr.key with the given state's key.
 func (dr *domainRenewal) updateState(state *certState) {
+	fmt.Println("domainRenewal updateState called")
 	dr.m.stateMu.Lock()
 	defer dr.m.stateMu.Unlock()
 	dr.key = state.key
@@ -89,24 +96,29 @@ func (dr *domainRenewal) updateState(state *certState) {
 //
 // The returned value is a time interval after which the renewal should occur again.
 func (dr *domainRenewal) do(ctx context.Context) (time.Duration, error) {
+	fmt.Println("domainRenewal do called")
 	// a race is likely unavoidable in a distributed environment
 	// but we try nonetheless
 	if tlscert, err := dr.m.cacheGet(ctx, dr.ck); err == nil {
+		fmt.Println("domainRenewal do inside cacheGet")
 		next := dr.next(tlscert.Leaf.NotAfter)
 		if next > dr.m.renewBefore()+renewJitter {
 			signer, ok := tlscert.PrivateKey.(crypto.Signer)
 			if ok {
+				fmt.Println("domainRenewal do inside ok")
 				state := &certState{
 					key:  signer,
 					cert: tlscert.Certificate,
 					leaf: tlscert.Leaf,
 				}
+				fmt.Println("domainRenewal do calling updateState")
 				dr.updateState(state)
 				return next, nil
 			}
 		}
 	}
 
+	fmt.Println("domainRenewal do calling authorizedCert")
 	der, leaf, err := dr.m.authorizedCert(ctx, dr.key, dr.ck)
 	if err != nil {
 		return 0, err
@@ -116,18 +128,22 @@ func (dr *domainRenewal) do(ctx context.Context) (time.Duration, error) {
 		cert: der,
 		leaf: leaf,
 	}
+	fmt.Println("domainRenewal do calling tlscert")
 	tlscert, err := state.tlscert()
 	if err != nil {
 		return 0, err
 	}
+	fmt.Println("domainRenewal do calling cachePut")
 	if err := dr.m.cachePut(ctx, dr.ck, tlscert); err != nil {
 		return 0, err
 	}
+	fmt.Println("domainRenewal do calling updateState")
 	dr.updateState(state)
 	return dr.next(leaf.NotAfter), nil
 }
 
 func (dr *domainRenewal) next(expiry time.Time) time.Duration {
+	fmt.Println("domainRenewal next called")
 	d := expiry.Sub(dr.m.now()) - dr.m.renewBefore()
 	// add a bit of randomness to renew deadline
 	n := pseudoRand.int63n(int64(renewJitter))
